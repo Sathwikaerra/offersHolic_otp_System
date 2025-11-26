@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Upload and Offer Creation</title>
+</head>
+<body>
+  <h1>Upload Image and Create Offer</h1>
+  
+  <form id="uploadForm" enctype="multipart/form-data">
+    <fieldset>
+      <legend>Upload Featured Image</legend>
+      <label for="image">Choose Image:</label>
+      <input type="file" id="image" name="image" accept="image/*" required>
+      <button type="submit">Upload Image</button>
+    </fieldset>
+  </form>
+
+  <form id="offerForm">
+    <fieldset>
+      <legend>Create Offer</legend>
+      <label for="title">Title:</label>
+      <input type="text" id="title" name="title" required><br><br>
+
+      <label for="description">Description:</label>
+      <input type="text" id="description" name="description" required><br><br>
+
+      <label for="offerType">Offer Type:</label>
+      <input type="text" id="offerType" name="offerType" required><br><br>
+
+      <label for="offerValue">Offer Value:</label>
+      <input type="text" id="offerValue" name="offerValue" required><br><br>
+
+      <label for="category">Category ID:</label>
+      <input type="text" id="category" name="category" required><br><br>
+
+      <label for="offerExpiryDate">Offer Expiry Date:</label>
+      <input type="date" id="offerExpiryDate" name="offerExpiryDate" required><br><br>
+
+      <label for="offerDetails">Offer Details:</label>
+      <input type="text" id="offerDetails" name="offerDetails" required><br><br>
+
+      <label for="businessProfile">Business Profile ID:</label>
+      <input type="text" id="businessProfile" name="businessProfile" required><br><br>
+
+      <input type="hidden" id="featuredImage" name="featuredImage">
+      <button type="submit">Create Offer</button>
+    </fieldset>
+  </form>
+
+  <div id="response"></div>
+  
+  <script>
+    const uploadForm = document.getElementById('uploadForm');
+    const offerForm = document.getElementById('offerForm');
+    const responseDiv = document.getElementById('response');
+
+    // Handle image upload
+    uploadForm.addEventListener('submit', async (e) => {
+      const formData = new FormData();
+      e.preventDefault();
+
+      const fileInput = document.getElementById('image');
+      formData.append('image', fileInput.files[0]);
+      console.log(formData);
+      try {
+        const response = await fetch('http://localhost:4040/offer/v1/featured/upload', {
+          method: 'POST',
+          headers: {
+           'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2YmY3MmRmNDIxOGU3OWU1NGJiNDkxMyIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNzIzODQwODA3fQ.sHmXCLosm7atZOlxTywPVYSrKehLn2XmlhVZ64uiYZg'
+          },
+          body: formData
+        });
+z
+        const result = await response.json();
+        document.getElementById('featuredImage').value = result.url; // Store the uploaded image URL in a hidden input field
+        responseDiv.innerHTML = `<p>Image uploaded successfully: ${result.url}</p>`;
+      } catch (error) {
+        responseDiv.innerHTML = `<p>Error: ${error.message}</p>`;
+      }
+    });
+    const fileInput = document.getElementById('image');
+    // Handle offer creation
+    offerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formData = new FormData(offerForm);
+      formData.append('image', fileInput.files[0]);
+
+      const offerData = {
+        title: formData.get('title'),
+        description: formData.get('description'),
+        offerType: formData.get('offerType'),
+        offerValue: formData.get('offerValue'),
+        category: formData.get('category'),
+        offerExpiryDate: formData.get('offerExpiryDate'),
+        offerDetails: formData.get('offerDetails'),
+        businessProfile: formData.get('businessProfile'),
+        // featuredImage: formData.get('featuredImage')
+      };
+
+      formData.append('image', fileInput.files[0]);
+
+      try {
+        const response = await fetch('http://localhost:4040/offer/v1/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2YmY3MmRmNDIxOGU3OWU1NGJiNDkxMyIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNzIzODQwODA3fQ.sHmXCLosm7atZOlxTywPVYSrKehLn2XmlhVZ64uiYZg'
+
+          },
+          body: JSON.stringify(offerData)
+        });
+
+        const result = await response.json();
+        responseDiv.innerHTML = `<p>Offer created successfully: ${JSON.stringify(result)}</p>`;
+      } catch (error) {
+        responseDiv.innerHTML = `<p>Error: ${error.message}</p>`;
+      }
+    });
+  </script>
+</body>
+</html>

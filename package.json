@@ -1,0 +1,37 @@
+{
+    "name": "offersholic-backend",
+    "version": "1.0.0",
+    "description": "Backend for Offersholic application",
+    "type": "module",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "dev": "nodemon server.js",
+        "start": "node server.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@scrrum-labs/gst-india-utils": "^1.0.16",
+        "axios": "^1.6.5",
+        "bcryptjs": "^2.4.3",
+        "body-parser": "^1.20.2",
+        "cookie-parser": "^1.4.6",
+        "cors": "^2.8.5",
+        "crypto": "^1.0.1",
+        "dotenv": "^16.3.1",
+        "expo-server-sdk": "^3.11.0",
+        "express": "^4.18.2",
+        "express-session": "^1.18.0",
+        "jsonwebtoken": "^9.0.2",
+        "mongodb": "^6.3.0",
+        "mongoose": "^8.0.2",
+        "node-cron": "^3.0.3",
+        "nodemailer": "^6.9.7",
+        "nodemon": "^3.0.2",
+        "path": "^0.12.7",
+        "razorpay": "^2.9.6",
+        "validator": "^13.12.0",
+        "zeptomail": "^6.0.0"
+    }
+}

@@ -1,0 +1,14 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.zephyr.offersholic",
+      "sha256_cert_fingerprints": [
+        "58:98:95:EB:00:62:7D:17:E6:71:22:39:65:B0:31:DF:C5:40:9E:EF:9B:82:9E:61:46:33:62:C8:C3:33:35:EB"
+      ]
+    }
+  }
+]
