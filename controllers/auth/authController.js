@@ -60,7 +60,7 @@ export const sendOtp = async (req, res) => {
 // ✅ Verify OTP and then create/login user
 export const verifyOtp = async (req, res) => {
   try {
-    const { mobileNumber, otp, sessionId } = req.body;
+    const { mobileNumber, otp, sessionId, deviceToken } = req.body;
 
     if (!mobileNumber || !otp || !sessionId) {
       return res.status(400).json({ message: "Missing required fields" });
@@ -75,7 +75,7 @@ export const verifyOtp = async (req, res) => {
       return res.status(400).json({ message: "Invalid OTP" });
     }
 
-    // ✅ OTP is correct → Check if user exists
+    // Check if user exists
     let user = await User.findOne({ mobileNumber });
 
     // If new user → create account
@@ -87,23 +87,31 @@ export const verifyOtp = async (req, res) => {
       });
     }
 
-    // ✅ Generate JWT token
-   const token = jwt.sign(
-  { id: user._id, role: user.profile.profileType || "User" },
-  process.env.JWT_SECRET,
-  { expiresIn: "7d" }
-);
+    // 🔥 Save/Update Device Token here
+    if (deviceToken) {
+      user.deviceToken = deviceToken;
+      await user.save();
+    }
 
-    res.status(200).json({
+    // Generate JWT token
+    const token = jwt.sign(
+      { id: user._id, role: user.profile.profileType || "User" },
+      process.env.JWT_SECRET,
+      { expiresIn: "7d" }
+    );
+
+    return res.status(200).json({
       message: "OTP verified successfully",
       token,
       user,
     });
+
   } catch (error) {
     console.error("OTP Verify Error:", error.response?.data || error.message);
-    res.status(500).json({ message: "Failed to verify OTP" });
+    return res.status(500).json({ message: "Failed to verify OTP" });
   }
 };
+
 
 
 
