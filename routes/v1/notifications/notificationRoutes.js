@@ -2,6 +2,7 @@ import express from 'express';
 import User from '../../../models/User.js'
 import { createNotification, deleteNotification, getAllNotifications, markNotificationAsRead } from '../../../controllers/notification/notificationController.js';
 import { authenticateAdmin, authenticateToken } from '../../../middlewares/auth/authMiddleware.js';
+import { sendPushNotification } from "../utils/sendNotification.js";
 
 const router = express.Router();
 
