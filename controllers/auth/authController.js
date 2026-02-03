@@ -61,6 +61,7 @@ export const sendOtp = async (req, res) => {
 export const verifyOtp = async (req, res) => {
   try {
     const { mobileNumber, otp, sessionId, deviceToken } = req.body;
+    console.log("device token",deviceToken)
 
     if (!mobileNumber || !otp || !sessionId) {
       return res.status(400).json({ message: "Missing required fields" });

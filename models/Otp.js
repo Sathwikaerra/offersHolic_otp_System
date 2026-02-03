@@ -1,12 +1,10 @@
 import mongoose from "mongoose";
 
-const otpSchema = mongoose.Schema({
+const otpSchema = new mongoose.Schema({
   email: String,
+  mobileNumber: String,
   otp: String,
-  mobileNumber: String,  
-  createdAt: Date  
+  expiresAt: Date,
 });
 
-const UserOTP = mongoose.model("OTPverification", otpSchema);
-
-export default UserOTP;
+export default mongoose.model("Otp", otpSchema);
